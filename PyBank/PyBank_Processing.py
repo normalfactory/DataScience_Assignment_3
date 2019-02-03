@@ -11,6 +11,7 @@ def start():
 
 
     #- Provide User Information on start
+    print(" ")
     print("->------")
     print(" PyBank Challenge")
     print(" ")
@@ -35,8 +36,13 @@ def displayResultsOnConsole(resultsInfo):
     print("Financial Analysis")
     print("---------------------------")
     print(f"Total Months: {resultsInfo.totalMonths}")
-    print(f"Total: ${'{:.2f}'.format(resultsInfo.netRevenue)}")
-    print(f"Average Change: ${'{:.2f}'.format(resultsInfo.getAverageMonthlyChange())}")
+    print(f"Total: ${'{:,.2f}'.format(resultsInfo.netRevenue)}")
+    print(f"Average Change: ${'{:,.2f}'.format(resultsInfo.getAverageMonthlyChange())}")
+
+    print(f"Greatest Increase in Profits: {resultsInfo.greatestIncreaseMonth} (${'{:,.2f}'.format(resultsInfo.greatestIncreaseValue)})")
+
+    print(f"Greatest Decrease in Profits: {resultsInfo.greatestDecreaseMonth} (${'{:,.2f}'.format(resultsInfo.greatestDecreaseValue)})")
+
     print(" ")
 
 
@@ -70,6 +76,7 @@ def readDataset():
             # Update counter of months
             resultsInfo.totalMonths += 1
 
+
             # Get current revenue
             currentMonthRevenue = float(row[1])
             currentMonthName = row[0]
@@ -77,14 +84,8 @@ def readDataset():
 
             # Determine change between months
             if (resultsInfo.totalMonths > 1):
-                # changeBetweenMonthRevenue = (currentMonthRevenue - previousMonthRevenue)
-
-                # resultsInfo.totalChange += changeBetweenMonthRevenue
-
                 resultsInfo.addMonthlyChange(previousMonthRevenue, currentMonthRevenue, currentMonthName)
 
-
-            
 
             # Total net amount
             resultsInfo.netRevenue += currentMonthRevenue
@@ -93,7 +94,6 @@ def readDataset():
             # Set Previous Month Revenue
             #   Used next loop
             previousMonthRevenue = currentMonthRevenue
-
 
 
     return resultsInfo
