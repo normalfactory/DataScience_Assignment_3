@@ -1,4 +1,7 @@
-# Purpose : 
+""" Contains the processing for the PyBank assignment; separate functions for different components
+
+Scott McEachern
+"""
 
 
 def start():
@@ -20,14 +23,6 @@ def start():
     #- Print Results
     displayResultsOnConsole(resultsInfo)
 
-    # print(f"Total Months: {resultsInfo.totalMonths}")
-    # print(f"Total net revenue: {resultsInfo.netRevenue}")
-    # test = PyBank_Data.ResultsContainer
-
-    # test.totalMonths = 9
-
-    # print(test.totalMonths)
-    # PyBank_Data.ResultsContainer
 
 
 def displayResultsOnConsole(resultsInfo):
