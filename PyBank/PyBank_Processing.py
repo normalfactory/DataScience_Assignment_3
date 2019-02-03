@@ -25,11 +25,68 @@ def start():
     displayResultsOnConsole(resultsInfo)
 
 
+    #- Write Results to Disk
+    saveResultsToFile(resultsInfo)
+
+
+    #- Complete User Information
+    print("Completed writing to disk")
+    print(" ")
+
+
+def saveResultsToFile(resultsInfo):
+    """ Stores the results to text file that is located in the same location as the dataset
+    Raw data is provided and is not formated
+
+    Accepts:
+        resultsInfo (ResultsContainer) contains the results of the analysis
+
+    Returns: nothing
+    """
+
+    import os
+    import csv
+    import PyBank_Data
+
+
+    #- Create Path
+    path = os.path.join(".", "Resources", "AnalysisResults.csv")
+
+
+    with open(path, 'w', newline='') as sourceFile:
+
+        # Create Writer
+        sourceWriter = csv.writer(sourceFile, delimiter=',')
+
+
+        # First Row of Headers
+        sourceWriter.writerow(["Category", "Value"])
+
+
+        # Results
+        sourceWriter.writerow(["Total Months", resultsInfo.totalMonths])
+
+        sourceWriter.writerow(["Total", resultsInfo.netRevenue])
+
+        sourceWriter.writerow(["Average Change", resultsInfo.getAverageMonthlyChange()])
+
+        sourceWriter.writerow(["Greatest increase in profit month", resultsInfo.greatestIncreaseMonth])
+
+        sourceWriter.writerow(["Greates increase in profit value", resultsInfo.greatestIncreaseValue])
+
+        sourceWriter.writerow(["Greatest decrease in profit month", resultsInfo.greatestDecreaseMonth])
+
+        sourceWriter.writerow(["Greates decrease in profit value", resultsInfo.greatestDecreaseValue])
+
+
 
 def displayResultsOnConsole(resultsInfo):
     """ Displays the results of the calculations on the console
-    Accepts : resultInfo (PyBank_Data.ResultContainer) Holds the results of the calculations from dataset
+
+    Accepts : 
+        resultInfo (PyBank_Data.ResultContainer) Holds the results of the calculations from dataset
     """
+
     import PyBank_Data
 
     print(" ")
@@ -49,7 +106,8 @@ def displayResultsOnConsole(resultsInfo):
 
 def readDataset():
     """ Reads through the dataset and does the calcualtions for the revenue
-        Returns: PyBank_Data.ResultContainer, has the results
+
+    Returns: PyBank_Data.ResultContainer, has the results
     """
     import os
     import csv

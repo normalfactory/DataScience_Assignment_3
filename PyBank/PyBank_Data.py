@@ -39,7 +39,6 @@ class ResultsContainer:
         Returns: float - average monthly change
         """
 
-
         return (clr.totalChange/(clr.totalMonths -1) )
     
 
@@ -53,7 +52,7 @@ class ResultsContainer:
             previousMonthRevenue (float) revenue from the previous month
             currentMonthRevenue (float) revenue of the current month
             currentMonthName (string) name of the current month
-            
+
         Returns: nothing
         """
         
