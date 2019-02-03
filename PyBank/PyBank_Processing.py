@@ -36,6 +36,8 @@ def displayResultsOnConsole(resultsInfo):
     print("---------------------------")
     print(f"Total Months: {resultsInfo.totalMonths}")
     print(f"Total: ${'{:.2f}'.format(resultsInfo.netRevenue)}")
+    print(f"Average Change: ${'{:.2f}'.format(resultsInfo.getAverageMonthlyChange())}")
+    print(" ")
 
 
 
@@ -52,6 +54,8 @@ def readDataset():
 
 
     #- Get Dataset
+    previousMonthRevenue = 0.0
+
     path = os.path.join(".",  "Resources", "budget_data.csv")
 
     with open(path, 'r') as sourceFile:
@@ -66,8 +70,29 @@ def readDataset():
             # Update counter of months
             resultsInfo.totalMonths += 1
 
+            # Get current revenue
+            currentMonthRevenue = float(row[1])
+            currentMonthName = row[0]
+
+
+            # Determine change between months
+            if (resultsInfo.totalMonths > 1):
+                # changeBetweenMonthRevenue = (currentMonthRevenue - previousMonthRevenue)
+
+                # resultsInfo.totalChange += changeBetweenMonthRevenue
+
+                resultsInfo.addMonthlyChange(previousMonthRevenue, currentMonthRevenue, currentMonthName)
+
+
+            
+
             # Total net amount
-            resultsInfo.netRevenue += float(row[1])
+            resultsInfo.netRevenue += currentMonthRevenue
+
+
+            # Set Previous Month Revenue
+            #   Used next loop
+            previousMonthRevenue = currentMonthRevenue
 
 
 
