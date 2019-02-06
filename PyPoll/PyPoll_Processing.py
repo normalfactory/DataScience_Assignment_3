@@ -18,24 +18,88 @@ def start():
     candidates = readDataset()
 
 
+    #- Determine Statistics
+    resultContainer = calculateResults(candidates)
+
+    print(type(resultContainer))
+    print(resultContainer)
+
     #- Determine Vote Count
     #   Value of the dictionary contains the count for each candidate
+    # totalVotes = 0
+    # for sourceKey, sourceValue in candidates.items():
+    #     totalVotes += sourceValue
+
+
+    # #- Calculate Statistics
+    # #   Store percentage of votes in dictionary that has the candidate name as key; the value is the percentage
+    # candidatePercentage = {}
+
+    # for sourceKey, sourceValue in candidates.items():
+    #     candidatePercentage[sourceKey] = (sourceValue/totalVotes)
+
+    # print(candidatePercentage)
+    # print(totalVotes)
+    # print(type(candidates))
+    # print(candidates)
+
+def calculateResults(candidates):
+    """
+    Accepts :
+        candidates (dictionary) holds the information from the dataset; key- candidate name in lower case value - number of votes
+    
+    Returns : Dictionary holds the results of the caclulations so that it can be displayed and printed
+                key- totalvotes     value: (int) number of votes
+                key- winner         value: (str) name of the candidate that won; had most votes
+                key- candidates     value: (list) list of the candidates; dictionary object with the following:
+                                                key: name   value: (str) name of the candiate, in title case
+                                                key: count  value: (int) total number of votes of the candidate
+                                                key: percentage  value: (numeric) percentage of the votes 
+    """
+
+    #- Determine Vote Count and Winner
+    #   Loop through the dictionary that contains the count for each candidate
     totalVotes = 0
+    winnerTotalVotes = 0
+    winnerCandidate = ""
+
     for sourceKey, sourceValue in candidates.items():
+        # Total Votes
         totalVotes += sourceValue
 
+        # Determine Winner
+        if (sourceValue > winnerTotalVotes):
+            winnerTotalVotes = sourceValue
+            winnerCandidate = sourceKey.title()
 
-    #- Calculate Statistics
-    #   Store percentage of votes in dictionary that has the candidate name as key; the value is the percentage
-    candidatePercentage = {}
+
+    #- Determine Percentage
+    candidateResults = []
 
     for sourceKey, sourceValue in candidates.items():
-        candidatePercentage[sourceKey] = (sourceValue/totalVotes)
 
-    print(candidatePercentage)
-    print(totalVotes)
-    print(type(candidates))
-    print(candidates)
+        result = {}
+        result["name"] = sourceKey.title()
+        result["count"] = sourceValue
+        result["percentage"] = ((sourceValue/totalVotes) * 100)
+
+        candidateResults.append(result)
+
+
+    #- Package Results
+    resultsContainer = {}
+
+    # Total Count
+    resultsContainer["totalvotes"] = totalVotes
+
+    # Winner
+    resultsContainer["winner"] = winnerCandidate
+
+    # Candidates
+    resultsContainer["candidates"] = candidateResults
+
+
+    return resultsContainer
 
 
 
