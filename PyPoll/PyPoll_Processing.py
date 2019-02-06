@@ -12,6 +12,7 @@ def start():
     print("->------")
     print("PyPoll Challenge")
     print(" ")
+    print("Calculating results...")
 
 
     #- Gather Results
@@ -21,30 +22,95 @@ def start():
     #- Determine Statistics
     resultContainer = calculateResults(candidates)
 
-    print(type(resultContainer))
-    print(resultContainer)
 
-    #- Determine Vote Count
-    #   Value of the dictionary contains the count for each candidate
-    # totalVotes = 0
-    # for sourceKey, sourceValue in candidates.items():
-    #     totalVotes += sourceValue
+    #- Print Results to Console
+    printResultsToConsole(resultContainer)
 
 
-    # #- Calculate Statistics
-    # #   Store percentage of votes in dictionary that has the candidate name as key; the value is the percentage
-    # candidatePercentage = {}
+    #- Store Results to Disk
+    saveResultsToFile(resultContainer)
 
-    # for sourceKey, sourceValue in candidates.items():
-    #     candidatePercentage[sourceKey] = (sourceValue/totalVotes)
+    
+def saveResultsToFile(resultsContainer):
+    """ Using the dictionary provided, stores the results to a file in the Resources/Election_Results.csv with the 
+    columns of 'Candidate', 'VoteCount', 'VotePercentage'
 
-    # print(candidatePercentage)
-    # print(totalVotes)
-    # print(type(candidates))
-    # print(candidates)
+    Accepts : resultContainer (Dictionary) holds the results of the calculations
+                key- totalvotes     value: (int) number of votes
+                key- winner         value: (str) name of the candidate that won; had most votes
+                key- candidates     value: (list) list of the candidates; dictionary object with the following:
+                                                key: name   value: (str) name of the candiate, in title case
+                                                key: count  value: (int) total number of votes of the candidate
+                                                key: percentage  value: (numeric) percentage of the votes
+    """
+    
+    import csv
+    import os
+
+
+    #- Create Path
+    path = os.path.join(".", "Resources", "Election_Results.csv")
+
+
+    #- Create File
+    with open(path, 'w', newline='') as sourceFile:
+
+        # Create Writer
+        sourceWriter = csv.writer(sourceFile, delimiter=",")
+
+        # First Row of Headers
+        sourceWriter.writerow(["Candidate", "VoteCount", "VotePercentage"])
+
+        # Write Row for each candidate
+        for candidateInfo in resultsContainer["candidates"]:
+            candidateRow = [candidateInfo['name'], candidateInfo['count'], candidateInfo['percentage'] ]
+
+            sourceWriter.writerow(candidateRow)
+    
+    print("Completed file to disk; Election_Results.csv")
+    print(" ")
+
+
+def printResultsToConsole(resultContainer):
+    """ Using the dictionary provided, prints the results of the election to the console
+
+    Accepts : resultContainer (Dictionary) holds the results of the calculations
+                key- totalvotes     value: (int) number of votes
+                key- winner         value: (str) name of the candidate that won; had most votes
+                key- candidates     value: (list) list of the candidates; dictionary object with the following:
+                                                key: name   value: (str) name of the candiate, in title case
+                                                key: count  value: (int) total number of votes of the candidate
+                                                key: percentage  value: (numeric) percentage of the votes
+    """
+
+    #- Print Header
+    print(" ")
+    print(" ")
+    print("Election Results")
+    print("----------------------------")
+
+    #- Print Total Votes
+    print(f"Total Votes: {'{:,}'.format(resultContainer['totalvotes'])}")
+    print("----------------------------")
+
+
+    #- Print Candidate Results
+    for candidateInfo in resultContainer["candidates"]:
+
+        print(f"{candidateInfo['name']}: {'{:.2f}'.format(candidateInfo['percentage'])}%  ({'{:,}'.format(candidateInfo['count'])})")
+
+    
+    #- Print Winner
+    print("----------------------------")
+    print(f"Winner: {resultContainer['winner']}")
+    print("----------------------------")
+    print(" ")
+
+
 
 def calculateResults(candidates):
-    """
+    """ Calculates the total votes, winner and percentage of each of the candidates.  Package the results in dictionary.
+
     Accepts :
         candidates (dictionary) holds the information from the dataset; key- candidate name in lower case value - number of votes
     
